@@ -18,64 +18,72 @@ let getComputerChoice = function () {
     }
 }
 
-let getHumanChoice = function () {
-    let play = prompt("Choose: Rock, Paper, or Scissors?");
 
-    if (play.toLowerCase() === "rock") {
-        hum = "Rock"
-        console.log(hum)
-    } else if (play.toLowerCase() === "paper") {
-        hum = "Paper"
-        console.log(hum)
-    } else  if (play.toLowerCase() === "scissors" || play.toLowerCase() === "scissor") {
-        hum = "Scissors"
-        console.log(hum)
-    } else {
-        alert("Please enter Rock, Paper, or Scissors")
-        getHumanChoice()
-    }
+let getHumanChoice = function () {
+
+    document.getElementById('rock').addEventListener('click', () => {
+        hum = "Rock";
+        playGame();
+    });
+    
+    document.getElementById('paper').addEventListener('click', () => {
+        hum = "Paper";
+        playGame();
+    });
+    
+    document.getElementById('scissors').addEventListener('click', () => {
+        hum = "Scissors";
+        playGame();
+    });
 
 }
 
 
 let humanScore = 0;
 let computerScore = 0;
-let rounds = 1;
+let rounds = 0;
 
 
 
 function playGame() {
-    while (rounds <= 5) {
-        getComputerChoice();
-        getHumanChoice();
-        playRound(hum, comp);
-        console.log(`Your Score: ${humanScore}\nComputers Score: ${computerScore}\nRound: ${rounds}`)
+    if ((humanScore >= 5) || (computerScore >= 5)) {
+        if (humanScore > computerScore) {
+            console.log("You win the game!");
+            document.getElementById('match').textContent = "You win the game!";
+        } else if (humanScore < computerScore) {
+            console.log("You lose the game!");
+            document.getElementById('match').textContent = "You lose the game!";
+        } else {
+            console.log("The game is a Tie!");
+            document.getElementById('match').textContent = "The game is a Tie!";
+        }
+        return;
     }
 
-    if (humanScore > computerScore) {
-        console.log("You win the game!")
-    } else if (humanScore < computerScore) {
-        console.log("You lose the game!")
-    } else {
-        console.log("The game is a Tie!")
-    }
+    getComputerChoice();
+    playRound(hum, comp);
+    console.log(`Your Score: ${humanScore}\nComputer's Score: ${computerScore}\nRound: ${rounds}`);
+    document.getElementById('result').textContent = `Your Score: ${humanScore}\nComputer's Score: ${computerScore}\nRound: ${rounds}`;
 
     function playRound(hum, comp) {
-        if (hum === comp && rounds <= 5) {
+        if (hum === comp) {
             console.log(`Your choice: ${hum}`)
             console.log(`Computers choice: ${comp}`)
             console.log("It's a tie, try again!")
+            document.getElementById('match').textContent = `Your choice: ${hum}, Computers choice: ${comp}, It's a tie, try again!`;
             rounds++;
-        } else if (((hum === "Rock" && comp === "Scissors") || (hum === "Paper" && comp === "Rock") || (hum === "Scissors" && comp === "Paper")) && rounds <= 5) { 
+        } else if (((hum === "Rock" && comp === "Scissors") || (hum === "Paper" && comp === "Rock") || (hum === "Scissors" && comp === "Paper"))) { 
             console.log(`Your choice: ${hum}`)
             console.log(`Computers choice: ${comp}`)
             console.log("You win!!!")
+            document.getElementById('match').textContent = `Your choice: ${hum}, Computers choice: ${comp}, You win!!!`;
             const h = humanScore++
             rounds++;
-        } else if(((hum === "Rock" && comp === "Paper") || (hum === "Paper" && comp === "Scissors") || (hum === "Scissors" && comp === "Rock")) && rounds <= 5) {
+        } else if(((hum === "Rock" && comp === "Paper") || (hum === "Paper" && comp === "Scissors") || (hum === "Scissors" && comp === "Rock"))) {
             console.log(`Your choice: ${hum}`)
             console.log(`Computers choice: ${comp}`)
             console.log("You lose!!!")
+            document.getElementById('match').textContent = `Your choice: ${hum}, Computers choice: ${comp}, You lose!!!`;
             const c = computerScore++
             rounds++;
         }
@@ -83,4 +91,8 @@ function playGame() {
 }
 
 
-playGame();
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    getHumanChoice();
+});
